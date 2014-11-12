@@ -76,7 +76,8 @@ int tinytds_err_handler(DBPROCESS *dbproc, int severity, int dberr, int oserr, c
       decide what to do. We would use INT_TIMEOUT, however it seems tdserror()
       in tds/util.c converts INT_TIMEOUT to INT_CONTINUE.
       */
-      cancel = 1;
+      // Azure SQL doesn't deal with this, so don't cancel...
+      cancel = 0;
       break;
 
     case SYBEWRIT:
