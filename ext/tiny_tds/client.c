@@ -69,17 +69,6 @@ int tinytds_err_handler(DBPROCESS *dbproc, int severity, int dberr, int oserr, c
       dbfreebuf(dbproc);
       break;
 
-    case SYBETIME:
-      /*
-      SYBETIME is the only error that can send INT_TIMEOUT or INT_CONTINUE,
-      but we don't ever want to automatically retry. Instead have the app
-      decide what to do. We would use INT_TIMEOUT, however it seems tdserror()
-      in tds/util.c converts INT_TIMEOUT to INT_CONTINUE.
-      */
-      // Azure SQL doesn't deal with this, so don't cancel...
-      cancel = 0;
-      break;
-
     case SYBEWRIT:
       /* Write errors may happen after we abort a statement */
       if (userdata && (userdata->dbsqlok_sent || userdata->dbcancel_sent)) {
